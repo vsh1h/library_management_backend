@@ -13,9 +13,34 @@ model Book {
   summary String
   isbn String
   url String
+  author Author @relation(fields: [authorId] , references: [id])
+  authorId Int
+  genres BookGenreMapping[]
 }
 
 model Author {
   id Int @id@default(autoincrement())
   first_name String
+  family_name String
+  date_of_birth DateTime
+  date_of_death DateTime?
+  name String
+  lifeSpan String?
+  url String
+  books Book[]
+}
+
+model Genre {
+  id Int @id @default(autoincrement())
+  name String
+  url String
+  books BookGenreMapping[]
+}
+
+model BookGenreMapping {
+  books Book @relation(fields: [bookId], references: [id])
+  bookId Int
+  genres Genre @relation(fields: [genreId], references: [id])
+  genreId Int
+  @@id([bookId,genreId])
 }
